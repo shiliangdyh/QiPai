@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:id="@+id/rootview"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:src="@mipmap/ic_launcher"
+            android:layout_width="16dp"
+            android:layout_height="16dp"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:text="今日头条"
+            android:textSize="14sp"
+            android:layout_marginLeft="4dp"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/content"
+        android:text="金钻大世界，当庄我做主，极乐不思蜀，健康远离赌。"
+        android:textSize="16sp"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>

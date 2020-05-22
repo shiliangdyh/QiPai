@@ -9,8 +9,10 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -30,6 +32,10 @@ import com.bumptech.glide.request.transition.Transition;
 import com.sl.qipai.App;
 import com.sl.qipai.NotificationBean;
 import com.sl.qipai.R;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -60,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_main);
 
 //        NotificationUtil mNotificationUtils = new NotificationUtil(this);
@@ -139,6 +146,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(NotificationBean event) {
+        Log.d(TAG, "onEventMainThread: ");
+        flg = !flg;
+//        notificationManager.cancel(NOTIFICATION_ID);
+        showNotification();
+    }
+
+    boolean flg = true;
+
     /**
      * 展示通知栏
      */
@@ -151,8 +168,8 @@ public class MainActivity extends AppCompatActivity {
             mChannel.setDescription("通知栏");
             mChannel.enableLights(false);
             mChannel.setLightColor(Color.BLUE);
-            mChannel.enableVibration(true);
-            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            mChannel.enableVibration(false);
+            mChannel.setVibrationPattern(new long[]{0});
             notificationManager.createNotificationChannel(mChannel);
             notification = new NotificationCompat.Builder(this, id)
                     .setSmallIcon(R.mipmap.ic_launcher)
@@ -181,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .build();
         }
+
 
 
         notificationManager.notify(NOTIFICATION_ID, notification);
@@ -240,8 +258,15 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     private RemoteViews getContentView(boolean showBigView) {
-        RemoteViews mRemoteViews = new RemoteViews(getPackageName(), R.layout.view_notify_big);
-        mRemoteViews.setImageViewBitmap(R.id.custom_song_icon, imageBitmap);
+        int layout =  -1;
+        Log.d(TAG, "getContentView: " + flg);
+        if (flg){
+            layout = R.layout.view_notify_big;
+        }else {
+            layout = R.layout.view_notify_big2;
+        }
+        RemoteViews mRemoteViews = new RemoteViews(getPackageName(), layout);
+//        mRemoteViews.setImageViewBitmap(R.id.custom_song_icon, imageBitmap);
         mRemoteViews.setImageViewBitmap(R.id.iv_logo, logoBitmap);
         mRemoteViews.setTextViewText(R.id.content, notificationBean.getContent());
         mRemoteViews.setTextViewText(R.id.tv_title, notificationBean.getAppName());
@@ -250,9 +275,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private PendingIntent getClickPendingIntent() {
-        Intent intent = new Intent("android.intent.action.VIEW", Uri.parse(notificationBean.getJumpUrl()));
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, FLAG_ONE_SHOT);
-        return pendingIntent;
+        Intent intent = new Intent(this, MyBroatCast.class);
+        intent.setAction("notification_card");
+        PendingIntent pendingIntentClick0 = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return pendingIntentClick0;
     }
 
     private PendingIntent getDefaultIntent(int flags) {
@@ -260,4 +286,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static final int NOTIFICATION_ID = 10003;
+
+    public static class MyBroatCast extends BroadcastReceiver {
+
+        public MyBroatCast() {
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "onReceive: ");
+            EventBus.getDefault().post(new NotificationBean());
+
+        }
+    }
 }

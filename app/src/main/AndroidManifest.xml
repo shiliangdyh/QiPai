@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 
-    <uses-permission android:name="android.permission.VIBRATE"/>
+<!--    <uses-permission android:name="android.permission.VIBRATE"/>-->
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -44,6 +44,16 @@
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.sl.qipai.BmobContentProvider">
         </provider>
+
+        <receiver android:name="com.sl.qipai.MainActivity$MyBroatCast">
+            <intent-filter>
+                <action android:name="notification_card" />
+                <action android:name="notification_scan" />
+                <action android:name="notification_pay" />
+                <action android:name="notification_payphone" />
+                <action android:name="notification_hmf" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
