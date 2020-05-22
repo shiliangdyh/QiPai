@@ -9,5 +9,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         Bmob.initialize(this, "c0770bc4b8769ce9bf873e6b306e9054");
+        LogUtil.INSTANCE.setDEBUG(true);
+        LogUtil.INSTANCE.setMContext(this);
     }
 }

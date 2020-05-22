@@ -116,21 +116,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void done(String s, BmobException e) {
                 if (e == null) {
-                    Log.d(TAG, "done: ");
+                    LogUtil.INSTANCE.d(TAG, "done: ");
                 }else {
-                    Log.d(TAG, "error: " + e.getLocalizedMessage());
+                    LogUtil.INSTANCE.d(TAG, "error: " + e.getLocalizedMessage());
                 }
             }
         });
     }
 
     private void loadLogo() {
-        Log.d(TAG, "loadLogo: ");
+        LogUtil.INSTANCE.d(TAG, "loadLogo: ");
         Glide.with(this).asBitmap().load(notificationBean.getLogoUrl()).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 MainActivity.this.logoBitmap = resource;
-                Log.d(TAG, "onResourceReady: " + resource);
+                LogUtil.INSTANCE.d(TAG, "onResourceReady: " + resource);
                 loadImage();
             }
         });
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 MainActivity.this.imageBitmap = resource;
-                Log.d(TAG, "onResourceReady: " + resource);
+                LogUtil.INSTANCE.d(TAG, "onResourceReady: " + resource);
                 showNotification();
             }
         });
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(NotificationBean event) {
-        Log.d(TAG, "onEventMainThread: ");
+        LogUtil.INSTANCE.d(TAG, "onEventMainThread: ");
         flg = !flg;
 //        notificationManager.cancel(NOTIFICATION_ID);
         showNotification();
@@ -279,6 +279,8 @@ public class MainActivity extends AppCompatActivity {
                 .setContentTitleColor(mRemoteViews, R.id.title)
                 .setContentTitleSize(mRemoteViews, R.id.title)
                 .setContentTextSize(mRemoteViews, R.id.content)
+                .setTitleColor(mRemoteViews, R.id.tv_title)
+                .setTitleSize(mRemoteViews, R.id.tv_title)
                 .setContentTextColor(mRemoteViews, R.id.content);
         return mRemoteViews;
     }

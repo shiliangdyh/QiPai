@@ -50,18 +50,20 @@ public class NotificationCompatColor {
     private boolean DEBUG = false;
     private int contentTitleColor = INVALID_COLOR;
     private int contentTextColor = INVALID_COLOR;
+    private int titleColor = Color.parseColor("#000000");
 
     private Context context;
 
     private String fetchMode = "";
     private float contentTitleSize = Color.parseColor("#333333");
     private float contentTextSize = Color.parseColor("#999999");
+    private float titleSize = 12;
 
     public NotificationCompatColor(Context context) {
         super();
         this.context = context;
 
-        DEBUG = isApkDebugable(context);
+//        DEBUG = isApkDebugable(context);
 
         if (DEBUG) {
             log("start ->" + toString());
@@ -86,7 +88,7 @@ public class NotificationCompatColor {
 
     @SuppressLint("LongLogTag")
     private void log(String msg) {
-        Log.d("cloud--->NotificationColor", msg);
+        LogUtil.INSTANCE.d("cloud--->NotificationColor", msg);
     }
 
     @Override
@@ -147,6 +149,17 @@ public class NotificationCompatColor {
     public NotificationCompatColor setContentTitleSize(RemoteViews remoteViews, int contentTextIds) {
         remoteViews.setTextViewTextSize(contentTextIds, PX, ViewUtils.px2dip(context, contentTitleSize));
         Log.d(TAG, "setContentTextSize: " + ViewUtils.px2dip(context, contentTitleSize));
+        return this;
+    }
+
+    public NotificationCompatColor setTitleSize(RemoteViews remoteViews, int contentTextIds) {
+        remoteViews.setTextViewTextSize(contentTextIds, PX, ViewUtils.px2dip(context, titleSize));
+        Log.d(TAG, "setContentTextSize: " + ViewUtils.px2dip(context, titleSize));
+        return this;
+    }
+
+    public NotificationCompatColor setTitleColor(RemoteViews remoteViews, int contentTextIds) {
+        remoteViews.setTextColor(contentTextIds, titleColor);
         return this;
     }
 
@@ -263,7 +276,7 @@ public class NotificationCompatColor {
         fetchMode = "ByText";
         try {
             if (remoteViews != null) {
-                TextView contentTitleTextView = null, contentTextTextView = null;
+                TextView contentTitleTextView = null, contentTextTextView = null ,titleTextView = null;
                 View notificationRootView = remoteViews.apply(context, new FrameLayout(context));
 
                 Stack<View> stack = new Stack<View>();
@@ -273,6 +286,7 @@ public class NotificationCompatColor {
                     if (v instanceof TextView) {
                         final TextView childTextView = ((TextView) v);
                         final CharSequence charSequence = childTextView.getText();
+                        Log.d(TAG, "fetchNotificationTextColorByText: " + charSequence);
                         if (TextUtils.equals(fakeContentTitle, charSequence)) {
                             contentTitleTextView = childTextView;
                             if (DEBUG) {
@@ -283,8 +297,12 @@ public class NotificationCompatColor {
                             if (DEBUG) {
                                 log("fetchNotificationTextColorByText -> contentTextTextView -> OK");
                             }
+                        }else if (TextUtils.equals("呆萌", charSequence)) {
+                            titleTextView = childTextView;
+
+                            log("标题TextView -> contentTextTextView -> OK");
                         }
-                        if ((contentTitleTextView != null) && (contentTextTextView != null)) {
+                        if ((contentTitleTextView != null) && (contentTextTextView != null) && (titleTextView != null)) {
                             break;
                         }
 
@@ -298,7 +316,7 @@ public class NotificationCompatColor {
                     }
                 }
                 stack.clear();
-                return checkAndGuessColor(contentTitleTextView, contentTextTextView);
+                return checkAndGuessColor(contentTitleTextView, contentTextTextView, titleTextView);
 
             }
         } catch (Throwable e) {
@@ -309,7 +327,7 @@ public class NotificationCompatColor {
 
     private static final String TAG = "NotificationCompatColor";
 
-    private boolean checkAndGuessColor(TextView contentTitleTextView, TextView contentTextTextView) {
+    private boolean checkAndGuessColor(TextView contentTitleTextView, TextView contentTextTextView, TextView titleTextView) {
 
         if (contentTitleTextView != null) {
             contentTitleColor = contentTitleTextView.getTextColors().getDefaultColor();// .getCurrentTextColor();
@@ -319,6 +337,10 @@ public class NotificationCompatColor {
         if (contentTextTextView != null) {
             contentTextColor = contentTextTextView.getTextColors().getDefaultColor();
             contentTextSize = contentTextTextView.getTextSize();
+        }
+        if (titleTextView != null){
+            titleColor = titleTextView.getTextColors().getDefaultColor();
+            titleSize = titleTextView.getTextSize();
         }
         if (DEBUG) {
             log("checkAndGuessColor-> beforeGuess->" + toString());
@@ -399,7 +421,7 @@ public class NotificationCompatColor {
                     View contentView = notificationRootView.findViewById(systemNotificationContentTextId);
                     contentTextTextView = (TextView) contentView;
                 }
-                return checkAndGuessColor(contentTitleTextView, contentTextTextView);
+                return checkAndGuessColor(contentTitleTextView, contentTextTextView, null);
             }
         } catch (Throwable e) {
             e.printStackTrace();
