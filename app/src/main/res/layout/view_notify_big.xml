@@ -3,11 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="232dp"
     android:background="#ffffff"
+    android:padding="10dp"
     android:id="@+id/rootview"
     android:orientation="vertical">
 
     <LinearLayout
         android:orientation="horizontal"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
@@ -21,21 +23,31 @@
         <TextView
             android:id="@+id/tv_title"
             android:text="今日头条"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:layout_marginLeft="4dp"
-            android:textColor="#000"
-            android:textStyle="bold"
+            android:textColor="#333"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/title"
         android:text="金钻大世界，当庄我做主，极乐不思蜀，健康远离赌。"
-        android:textSize="16sp"
+        android:textSize="24sp"
         android:layout_margin="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/content"
+        android:text="金钻大世界，当庄我做主，极乐不思蜀，健康远离赌。"
+        android:textSize="15sp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_height="wrap_content"/>
+
 
     <ImageView
         android:id="@+id/custom_song_icon"

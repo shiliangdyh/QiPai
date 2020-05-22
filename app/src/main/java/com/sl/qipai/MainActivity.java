@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         notificationBeanBmobQuery.findObjects(new FindListener<NotificationBean>() {
             @Override
             public void done(List<NotificationBean> list, BmobException e) {
+                Log.d(TAG, "done: " );
                 if (list != null && !list.isEmpty()){
                     notificationBean = list.get(0);
                     Log.d(TAG, "done: " + notificationBean.toString());
@@ -266,11 +267,19 @@ public class MainActivity extends AppCompatActivity {
             layout = R.layout.view_notify_big2;
         }
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(), layout);
-//        mRemoteViews.setImageViewBitmap(R.id.custom_song_icon, imageBitmap);
         mRemoteViews.setImageViewBitmap(R.id.iv_logo, logoBitmap);
         mRemoteViews.setTextViewText(R.id.content, notificationBean.getContent());
         mRemoteViews.setTextViewText(R.id.tv_title, notificationBean.getAppName());
         mRemoteViews.setOnClickPendingIntent(R.id.rootview, getClickPendingIntent());
+
+        if (flg) {
+            mRemoteViews.setImageViewBitmap(R.id.custom_song_icon, imageBitmap);
+        }
+        NotificationCompatColor.AutomationUse(this)
+                .setContentTitleColor(mRemoteViews, R.id.title)
+                .setContentTitleSize(mRemoteViews, R.id.title)
+                .setContentTextSize(mRemoteViews, R.id.content)
+                .setContentTextColor(mRemoteViews, R.id.content);
         return mRemoteViews;
     }
 
