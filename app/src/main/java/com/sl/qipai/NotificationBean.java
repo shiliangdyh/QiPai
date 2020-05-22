@@ -5,6 +5,7 @@ import cn.bmob.v3.BmobObject;
 public class NotificationBean extends BmobObject {
     private String logoUrl;
     private String appName;
+    private String title;
     private String content;
     private String imageUrl;
     private String jumpUrl;
@@ -50,11 +51,20 @@ public class NotificationBean extends BmobObject {
         this.delayTime = delayTime;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     @Override
     public String toString() {
         return "NotificationBean{" +
                 "logoUrl='" + logoUrl + '\'' +
                 ", appName='" + appName + '\'' +
+                ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", jumpUrl='" + jumpUrl + '\'' +

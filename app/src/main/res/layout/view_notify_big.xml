@@ -24,7 +24,6 @@
             android:id="@+id/tv_title"
             android:text="今日头条"
             android:textSize="22sp"
-            android:textStyle="bold"
             android:layout_marginLeft="4dp"
             android:textColor="#000"
             android:layout_width="wrap_content"
@@ -36,7 +35,6 @@
         android:text="金钻大世界，当庄我做主，极乐不思蜀，健康远离赌。"
         android:textSize="24sp"
         android:layout_margin="5dp"
-        android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

@@ -15,11 +15,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
         notificationBeanBmobQuery.findObjects(new FindListener<NotificationBean>() {
             @Override
             public void done(List<NotificationBean> list, BmobException e) {
-                Log.d(TAG, "done: " );
-                if (list != null && !list.isEmpty()){
+                Log.d(TAG, "done: ");
+                if (list != null && !list.isEmpty()) {
                     notificationBean = list.get(0);
                     Log.d(TAG, "done: " + notificationBean.toString());
                     handler.sendEmptyMessageDelayed(0, notificationBean.getDelayTime());
@@ -105,8 +107,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void addNotification() {
         NotificationBean notificationBean = new NotificationBean();
-        notificationBean.setLogoUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1589971504681&di=6a54940462299b66e533df379a7c2937&imgtype=0&src=http%3A%2F%2Fwww.suntop168.com%2Fblog%2Fzb_users%2Fupload%2F2014%2F2%2FE034CA83.jpg");
+        notificationBean.setLogoUrl("http://www.kupan123.com/upload/1590151889x-1404755431.png");
         notificationBean.setAppName("今日头条");
+        notificationBean.setAppName("这是主标题");
         notificationBean.setDelayTime(3000);
         notificationBean.setJumpUrl("https://www.baidu.com");
         notificationBean.setContent("国庆七天乐，10号内每天都可以申请彩金。棋牌平台可以下7码，流水非常容易打满，玩家稳赚不赔的活动！");
@@ -117,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             public void done(String s, BmobException e) {
                 if (e == null) {
                     LogUtil.INSTANCE.d(TAG, "done: ");
-                }else {
+                } else {
                     LogUtil.INSTANCE.d(TAG, "error: " + e.getLocalizedMessage());
                 }
             }
@@ -126,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadLogo() {
         LogUtil.INSTANCE.d(TAG, "loadLogo: ");
+        if (TextUtils.isEmpty(notificationBean.getLogoUrl())){
+            loadImage();
+            return;
+        }
         Glide.with(this.getApplicationContext()).asBitmap().load(notificationBean.getLogoUrl()).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
@@ -133,10 +140,21 @@ public class MainActivity extends AppCompatActivity {
                 LogUtil.INSTANCE.d(TAG, "onResourceReady: " + resource);
                 loadImage();
             }
+
+            @Override
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                super.onLoadFailed(errorDrawable);
+                LogUtil.INSTANCE.d(TAG, "onLoadFailed: ");
+                loadImage();
+            }
         });
     }
 
     private void loadImage() {
+        if (TextUtils.isEmpty(notificationBean.getImageUrl())){
+            showNotification();
+            return;
+        }
         Glide.with(this.getApplicationContext()).asBitmap().load(notificationBean.getImageUrl()).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
@@ -144,13 +162,21 @@ public class MainActivity extends AppCompatActivity {
                 LogUtil.INSTANCE.d(TAG, "onResourceReady: " + resource);
                 showNotification();
             }
+
+            @Override
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                super.onLoadFailed(errorDrawable);
+                LogUtil.INSTANCE.d(TAG, "onLoadFailed: ");
+                showNotification();
+
+            }
         });
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(NotificationBean event) {
         LogUtil.INSTANCE.d(TAG, "onEventMainThread: ");
-        flg = !flg;
+//        flg = !flg;
 //        notificationManager.cancel(NOTIFICATION_ID);
         showNotification();
     }
@@ -160,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 展示通知栏
      */
-    public void showNotification(){
+    public void showNotification() {
 
         String id = "channel_demo";
         Notification notification;
@@ -199,7 +225,6 @@ public class MainActivity extends AppCompatActivity {
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .build();
         }
-
 
 
         notificationManager.notify(NOTIFICATION_ID, notification);
@@ -255,24 +280,27 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * 获取自定义通知栏view
+     *
      * @param showBigView
      * @return
      */
     private RemoteViews getContentView(boolean showBigView) {
-        int layout =  -1;
+        int layout = -1;
         Log.d(TAG, "getContentView: " + flg);
-        if (flg){
+        if (imageBitmap != null) {
             layout = R.layout.view_notify_big;
-        }else {
+        } else {
             layout = R.layout.view_notify_big2;
         }
         RemoteViews mRemoteViews = new RemoteViews(getPackageName(), layout);
-        mRemoteViews.setImageViewBitmap(R.id.iv_logo, logoBitmap);
+        if (logoBitmap != null) {
+            mRemoteViews.setImageViewBitmap(R.id.iv_logo, logoBitmap);
+        }
         mRemoteViews.setTextViewText(R.id.content, notificationBean.getContent());
         mRemoteViews.setTextViewText(R.id.tv_title, notificationBean.getAppName());
         mRemoteViews.setOnClickPendingIntent(R.id.rootview, getClickPendingIntent());
 
-        if (flg) {
+        if (imageBitmap != null) {
             mRemoteViews.setImageViewBitmap(R.id.custom_song_icon, imageBitmap);
         }
         NotificationCompatColor.AutomationUse(this)
@@ -286,9 +314,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private PendingIntent getClickPendingIntent() {
-        Intent intent = new Intent(this, MyBroatCast.class);
-        intent.setAction("notification_card");
-        PendingIntent pendingIntentClick0 = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        Intent intent = new Intent(this, MyBroatCast.class);
+//        intent.setAction("notification_card");
+//        PendingIntent pendingIntentClick0 = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//        return pendingIntentClick0;
+        Intent intent = new Intent();
+        intent.setAction("android.intent.action.VIEW");
+        Uri content_url = Uri.parse(notificationBean.getJumpUrl());
+        intent.setData(content_url);
+        PendingIntent pendingIntentClick0 = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         return pendingIntentClick0;
     }
 
@@ -311,3 +345,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+
+
