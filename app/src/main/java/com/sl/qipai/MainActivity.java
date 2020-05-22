@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadLogo() {
         LogUtil.INSTANCE.d(TAG, "loadLogo: ");
-        Glide.with(this).asBitmap().load(notificationBean.getLogoUrl()).into(new SimpleTarget<Bitmap>() {
+        Glide.with(this.getApplicationContext()).asBitmap().load(notificationBean.getLogoUrl()).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 MainActivity.this.logoBitmap = resource;
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadImage() {
-        Glide.with(this).asBitmap().load(notificationBean.getImageUrl()).into(new SimpleTarget<Bitmap>() {
+        Glide.with(this.getApplicationContext()).asBitmap().load(notificationBean.getImageUrl()).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 MainActivity.this.imageBitmap = resource;

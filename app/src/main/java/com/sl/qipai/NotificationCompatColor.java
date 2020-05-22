@@ -159,7 +159,7 @@ public class NotificationCompatColor {
     }
 
     public NotificationCompatColor setTitleColor(RemoteViews remoteViews, int contentTextIds) {
-        remoteViews.setTextColor(contentTextIds, titleColor);
+        remoteViews.setTextColor(contentTextIds, Color.rgb(35,35,35));
         return this;
     }
 
