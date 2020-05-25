@@ -57,7 +57,10 @@ public class NotificationCompatColor {
     private String fetchMode = "";
     private float contentTitleSize = Color.parseColor("#333333");
     private float contentTextSize = Color.parseColor("#999999");
-    private float titleSize = 12;
+    private float titleSize = 0;
+    private TextView contentTitleTextView;
+    private TextView contentTextTextView;
+    private TextView titleTextView;
 
     public NotificationCompatColor(Context context) {
         super();
@@ -124,7 +127,8 @@ public class NotificationCompatColor {
      * @return
      */
     public NotificationCompatColor setContentTitleColor(RemoteViews remoteViews, int contentTitleIds) {
-        remoteViews.setTextColor(contentTitleIds, Color.parseColor("#FF1C1C1C"));
+//        remoteViews.setTextColor(contentTitleIds, Color.parseColor("#000000"));
+        remoteViews.setTextColor(contentTitleIds, titleColor);
         return this;
     }
 
@@ -142,24 +146,28 @@ public class NotificationCompatColor {
 
     public NotificationCompatColor setContentTextSize(RemoteViews remoteViews, int contentTextIds) {
         remoteViews.setTextViewTextSize(contentTextIds, PX, ViewUtils.px2dip(context, contentTextSize));
-        Log.d(TAG, "setContentTextSize: " + ViewUtils.px2dip(context, contentTextSize));
+        LogUtil.INSTANCE.d(TAG, "setContentTextSize: " + ViewUtils.px2dip(context, contentTextSize));
         return this;
     }
 
     public NotificationCompatColor setContentTitleSize(RemoteViews remoteViews, int contentTextIds) {
-        remoteViews.setTextViewTextSize(contentTextIds, PX, ViewUtils.px2dip(context, contentTitleSize));
-        Log.d(TAG, "setContentTextSize: " + ViewUtils.px2dip(context, contentTitleSize));
+        remoteViews.setTextViewTextSize(contentTextIds, PX, ViewUtils.px2dip(context, contentTextSize));
+        LogUtil.INSTANCE.d(TAG, "setContentTextSize: " + ViewUtils.px2dip(context, contentTitleSize));
         return this;
     }
 
     public NotificationCompatColor setTitleSize(RemoteViews remoteViews, int contentTextIds) {
+        if (titleSize == 0){
+
+            return this;
+        }
         remoteViews.setTextViewTextSize(contentTextIds, PX, ViewUtils.px2dip(context, titleSize));
-        Log.d(TAG, "setContentTextSize: " + ViewUtils.px2dip(context, titleSize));
+        LogUtil.INSTANCE.d(TAG, "setContentTextSize: " + ViewUtils.px2dip(context, titleSize));
         return this;
     }
 
     public NotificationCompatColor setTitleColor(RemoteViews remoteViews, int contentTextIds) {
-        remoteViews.setTextColor(contentTextIds, Color.parseColor("#FF1D1D1D"));
+        remoteViews.setTextColor(contentTextIds, titleColor);
         return this;
     }
 
@@ -286,7 +294,9 @@ public class NotificationCompatColor {
                     if (v instanceof TextView) {
                         final TextView childTextView = ((TextView) v);
                         final CharSequence charSequence = childTextView.getText();
-                        Log.d(TAG, "fetchNotificationTextColorByText: " + charSequence);
+                        LogUtil.INSTANCE.d(TAG, "fetchNotificationTextColorByText: " + childTextView.getTextSize());
+                        LogUtil.INSTANCE.d(TAG, "fetchNotificationTextColorByText: " + childTextView.getTextColors().getDefaultColor());
+                        LogUtil.INSTANCE.d(TAG, "fetchNotificationTextColorByText: " + charSequence);
                         if (TextUtils.equals(fakeContentTitle, charSequence)) {
                             contentTitleTextView = childTextView;
                             if (DEBUG) {
@@ -301,6 +311,7 @@ public class NotificationCompatColor {
                             titleTextView = childTextView;
 
                             log("标题TextView -> contentTextTextView -> OK");
+                            log("isBold " + titleTextView.getTypeface().isBold());
                         }
                         if ((contentTitleTextView != null) && (contentTextTextView != null) && (titleTextView != null)) {
                             break;
@@ -332,15 +343,17 @@ public class NotificationCompatColor {
         if (contentTitleTextView != null) {
             contentTitleColor = contentTitleTextView.getTextColors().getDefaultColor();// .getCurrentTextColor();
             contentTitleSize = contentTitleTextView.getTextSize();
-
+            this.contentTitleTextView = contentTitleTextView;
         }
         if (contentTextTextView != null) {
             contentTextColor = contentTextTextView.getTextColors().getDefaultColor();
             contentTextSize = contentTextTextView.getTextSize();
+            this.contentTextTextView = contentTextTextView;
         }
         if (titleTextView != null){
             titleColor = titleTextView.getTextColors().getDefaultColor();
             titleSize = titleTextView.getTextSize();
+            this.titleTextView = titleTextView;
         }
         if (DEBUG) {
             log("checkAndGuessColor-> beforeGuess->" + toString());

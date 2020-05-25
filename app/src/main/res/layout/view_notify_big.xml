@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="232dp"
+    android:layout_height="wrap_content"
     android:background="#ffffff"
     android:padding="10dp"
     android:id="@+id/rootview"
@@ -14,27 +14,33 @@
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/iv_logo"
-            android:src="@mipmap/ic_launcher"
             android:layout_width="16dp"
-            android:layout_height="16dp"/>
+            android:layout_height="18dp"
+            android:src="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_title"
-            android:text="今日头条"
-            android:textSize="22sp"
-            android:layout_marginLeft="4dp"
+            android:text="QQ浏览器"
+            android:textSize="13sp"
             android:textColor="#000"
+            android:layout_marginLeft="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
+
     <TextView
         android:id="@+id/title"
         android:text="金钻大世界，当庄我做主，极乐不思蜀，健康远离赌。"
-        android:textSize="24sp"
-        android:layout_margin="5dp"
+        android:textSize="12sp"
+        android:textColor="#000"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -52,8 +58,7 @@
     <ImageView
         android:id="@+id/custom_song_icon"
         android:layout_width="match_parent"
-        android:layout_height="132dp"
-        android:padding="6dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:scaleType="centerCrop" />
 

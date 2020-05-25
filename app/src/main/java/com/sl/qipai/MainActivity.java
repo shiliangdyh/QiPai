@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         NotificationBean notificationBean = new NotificationBean();
         notificationBean.setLogoUrl("http://www.kupan123.com/upload/1590151889x-1404755431.png");
         notificationBean.setAppName("今日头条");
-        notificationBean.setAppName("这是主标题");
+        notificationBean.setTitle("这是主标题");
         notificationBean.setDelayTime(3000);
         notificationBean.setJumpUrl("https://www.baidu.com");
         notificationBean.setContent("国庆七天乐，10号内每天都可以申请彩金。棋牌平台可以下7码，流水非常容易打满，玩家稳赚不赔的活动！");
@@ -147,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 LogUtil.INSTANCE.d(TAG, "onLoadFailed: ");
                 loadImage();
             }
+
         });
     }
 
@@ -298,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
         }
         mRemoteViews.setTextViewText(R.id.content, notificationBean.getContent());
         mRemoteViews.setTextViewText(R.id.tv_title, notificationBean.getAppName());
+        mRemoteViews.setTextViewText(R.id.title, notificationBean.getTitle());
         mRemoteViews.setOnClickPendingIntent(R.id.rootview, getClickPendingIntent());
 
         if (imageBitmap != null) {
@@ -307,9 +309,11 @@ public class MainActivity extends AppCompatActivity {
                 .setContentTitleColor(mRemoteViews, R.id.title)
                 .setContentTitleSize(mRemoteViews, R.id.title)
                 .setContentTextSize(mRemoteViews, R.id.content)
+                .setContentTextColor(mRemoteViews, R.id.content)
                 .setTitleColor(mRemoteViews, R.id.tv_title)
                 .setTitleSize(mRemoteViews, R.id.tv_title)
-                .setContentTextColor(mRemoteViews, R.id.content);
+
+        ;
         return mRemoteViews;
     }
 
