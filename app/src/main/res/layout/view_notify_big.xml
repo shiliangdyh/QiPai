@@ -19,7 +19,7 @@
             android:id="@+id/iv_logo"
             android:layout_width="16dp"
             android:layout_height="18dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_lan" />
 
         <TextView
             android:id="@+id/tv_title"

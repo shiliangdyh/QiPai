@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
             mChannel.setVibrationPattern(new long[]{0});
             notificationManager.createNotificationChannel(mChannel);
             notification = new NotificationCompat.Builder(this, id)
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.ic_lan)
                     .setWhen(System.currentTimeMillis())
                     .setContentIntent(getDefaultIntent(Notification.FLAG_ONGOING_EVENT))
                     .setCustomBigContentView(getContentView(true))
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             notification = new NotificationCompat.Builder(this, id)
                     .setWhen(System.currentTimeMillis())
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.ic_lan)
                     .setContentIntent(getDefaultIntent(Notification.FLAG_ONGOING_EVENT))
                     .setCustomBigContentView(getContentView(true))
                     .setCustomContentView(getContentView(false))
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             notification = new NotificationCompat.Builder(this, id)
                     .setWhen(System.currentTimeMillis())
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.ic_lan)
                     .setContentIntent(getDefaultIntent(Notification.FLAG_ONGOING_EVENT))
                     .setContent(getContentView(false))
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
 //            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
 //            notificationManager.createNotificationChannel(mChannel);
 //            notification = new NotificationCompat.Builder(this, id)
-//                    .setSmallIcon(R.mipmap.ic_launcher)
+//                    .setSmallIcon(R.mipmap.ic_lan)
 //                    .setWhen(System.currentTimeMillis())
 //                    .setContentIntent(getDefaultIntent(Notification.FLAG_ONGOING_EVENT))
 //                    .setCustomBigContentView(getContentView(true))

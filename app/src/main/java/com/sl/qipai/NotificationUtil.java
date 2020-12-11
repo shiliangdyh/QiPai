@@ -44,7 +44,7 @@ public class NotificationUtil {
             mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
             notificationManager.createNotificationChannel(mChannel);
             notification = new NotificationCompat.Builder(mContext, id)
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.ic_lan)
                     .setWhen(System.currentTimeMillis())
                     .setContentIntent(getDefaultIntent(Notification.FLAG_ONGOING_EVENT))
                     .setCustomBigContentView(getContentView(true))
@@ -55,7 +55,7 @@ public class NotificationUtil {
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             notification = new NotificationCompat.Builder(mContext, id)
                     .setWhen(System.currentTimeMillis())
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.ic_lan)
                     .setContentIntent(getDefaultIntent(Notification.FLAG_ONGOING_EVENT))
                     .setCustomBigContentView(getContentView(true))
                     .setCustomContentView(getContentView(false))
@@ -64,7 +64,7 @@ public class NotificationUtil {
         } else {
             notification = new NotificationCompat.Builder(mContext, id)
                     .setWhen(System.currentTimeMillis())
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.ic_lan)
                     .setContentIntent(getDefaultIntent(Notification.FLAG_ONGOING_EVENT))
                     .setContent(getContentView(false))
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
